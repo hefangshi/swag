@@ -96,7 +96,16 @@ func getPropertyName(field *ast.Field, parser *Parser) propertyName {
 		}
 		if astTypeIdent, ok := ptr.X.(*ast.Ident); ok {
 			name := astTypeIdent.Name
-			schemeType := TransToValidSchemeType(name)
+			var schemeType string
+			if typeSpecType,ok := astTypeIdent.Obj.Decl.(*ast.TypeSpec);ok {
+				if mType, ok := typeSpecType.Type.(*ast.Ident);ok {
+					schemeType = TransToValidSchemeType(mType.Name)
+				}else {
+					schemeType = TransToValidSchemeType(name)
+				}
+			} else {
+				schemeType = TransToValidSchemeType(name)
+			}
 			return propertyName{SchemaType: schemeType, ArrayType: schemeType}
 		}
 		if astTypeArray, ok := ptr.X.(*ast.ArrayType); ok { // if array
