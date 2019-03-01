@@ -465,7 +465,7 @@ func findTypeDef(importPath, typeName string) (*ast.TypeSpec, error) {
 			}
 		}
 	}
-	return nil, errors.New("type spec not found")
+	return nil, fmt.Errorf("type spec %s not found", typeName)
 }
 
 // ParseResponseComment parses comment for gived `response` comment string.
